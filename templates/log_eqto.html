@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Controle de calibragem</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container">
+        <div class="content first-content">
+            <div class="first-column">
+                <h2 class="title title-primary">Calibragem de Equipamentos</h2>
+                <p class="description description-primary">Controle de equipamentos calibráveis</p>
+            </div>
+            <div class="second-column">
+                <h2 class="title title-second">Valide seu e-mail</h2>
+                <p class="description description-second">Use seu E-mail Enind!</p>
+                <form class="form" action="{{ url_for('log_eqto.enviar_email') }}" method="post">
+
+                    <label class="label-input" for="">
+                        <i class="far fa-user icon-modify"></i>
+                        <input type="text" class="form-control" id="inputCmplEmail" name="CmplEmail" placeholder="Complemento Email" value="{{ prefemail }}">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="far fa-envelope icon-modify"></i>
+                        <input type="text" class="form-control" id="inputEmail" name="email" placeholder="@dominioemail.com.br" value="{{ dominioemail }}">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="fas fa-lock icon-modify"></i>
+                        <input type="text" class="form-control" id="inputCodigo" name="Codigo" placeholder="Codigo" value="{{ cod_usado }}">
+                    </label>
+
+                    <a class="password" href="/log_eqto/reenvio?ComplEmail={{ prefemail }}&email={{ dominioemail }}&codigo={{ cod_usado }}">não recebeu o código? Clique Aqui</a>
+                    <button type="submit" class="btn btn-second" name="btnEnviar" value="{{ nomebtn }}">{{ nomebtn }}</button>
+                    {% if tipoalerta != "alert alert-light" %}
+                        <p style="height:20px"></p>
+                        <div class="{{ tipoalerta }}" role="alert">
+                            {{ msg }}
+                    </div>
+                    {% endif %}
+                </form>
+            </div><!-- second column -->
+        </div><!-- first content -->
+        <div class="content second-content">
+            <div class="first-column">
+                <h2 class="title title-primary">hello, friend!</h2>
+                <p class="description description-primary">Enter your personal details</p>
+                <p class="description description-primary">and start journey with us</p>
+                <button id="signup" class="btn btn-primary">sign up</button>
+            </div>
+            <div class="second-column">
+                <h2 class="title title-second">sign in to developer</h2>
+                <p class="description description-second">or use your email account:</p>
+                <form class="form" action="{{ url_for('log_eqto.enviar_email') }}" method="post">
+
+                    <label class="label-input" for="">
+                        <i class="far fa-user icon-modify"></i>
+                        <input type="text" class="form-control" id="inputCmplEmail" name="CmplEmail" placeholder="Compl_Email" value="{{ prefemail }}">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="far fa-envelope icon-modify"></i>
+                        <select id="inputEmail" class="form-control" name="email">
+                            <option selected>@enind.com.br</option>
+                            <option>@enindservicos.com.br</option>
+                        </select>
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="fas fa-lock icon-modify"></i>
+                        <input type="text" class="form-control" id="inputCodigo" name="Codigo" placeholder="Codigo" value="{{ cod_usado }}">
+                    </label>
+
+                    <a class="password" href="#">forgot your password?</a>
+                    <button type="submit" class="btn btn-second" name="btnEnviar" value="{{ nomebtn }}">{{ nomebtn }}</button>
+                    {% if tipoalerta != "alert alert-light" %}
+                        <p style="height:20px"></p>
+                        <div class="{{ tipoalerta }}" role="alert">
+                            {{ msg }}
+                        </div>
+                    {% endif %}
+                </form>
+            </div><!-- second column -->
+        </div><!-- second-content -->
+    </div>
+    <script src="js/app.js"></script>
+</body>
+</html>

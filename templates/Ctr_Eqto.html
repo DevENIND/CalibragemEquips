@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Equipamentos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/css/style_listaeqto.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        {% set endpoint = url_for( request.endpoint, **request.view_args) %}
+        <div class="header">
+            <span>Cadastro de Equipamentos</span>
+            <a href="..{{endpoint}}/edit/new">
+                <button id="new">Incluir</i></button>
+            </a>
+        </div>
+
+        <div class="divTable">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID - Nome</th>
+                        <th>Num. Serie</th>
+                        <th>Status</th>
+                        <th>OS</th>
+                        <th>Certificadora</th>
+                        <th>Data validade</th>
+                        <th class="acao">Imagens</th>
+                        <th class="acao">Editar</th>
+                        <th class="acao">Excluir</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    {% for eqpto in equipamentos %}
+                    <tr>
+                        <td>{{ eqpto.id }} - {{eqpto.Desc}}</td>
+                        <td>{{ eqpto.NumSerie }}</td>
+                        <td>{{ eqpto.Status }}</td>
+                        <td>{{ eqpto.OS }}</td>
+                        <td>{{ eqpto.Certificadora }}</td>
+                        <td>{{ eqpto.DataValidade }}</td>
+
+                        <td class="acao">
+                            {% set EndLog = endpoint.replace("/Ctr_Eqto/","")%}
+                            <a href="/Carr_Img/{{EndLog}}/{{eqpto.id}}">
+                                <button><i class='bx bx-image-alt'></i></button>
+                            </a>
+                        </td>
+
+                        <td class="acao">
+                            <a href="..{{endpoint}}/edit/{{eqpto.id}}">
+                                <button><i class='bx bx-edit'></i></button>
+                            </a>
+                        </td>
+                        <td class="acao">
+                            <button data-toggle="modal" data-target="#myModal{{ eqpto.id }}"><i class='bx bx-trash'></i></button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% for eqpto in equipamentos %}
+    <!-- Modal -->
+        <div class="modal fade" id="myModal{{ eqpto.id }}" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Atenção,</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Deseja realmente deletar esse item? depois de deletado, não será possível restaurar.</p>
+                        <p>ID do equipamento: {{eqpto.id}}</p>
+                        <p>Seu Log: {{endpoint}}</p>
+                    </div>
+                    <div class="modal-footer">
+                        
+                            <a href="..{{endpoint}}/delete/{{eqpto.id}}"><button class="btn btn-danger">Deletar</button></a>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+
+</body>
+</html>

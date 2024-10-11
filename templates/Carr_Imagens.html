@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta>
+    <http-equiv ="X-UA-compatible" content=" IE-edge">
+
+        <link rel="stylesheet" href="/static/css/style_carrossel.css">
+
+
+        <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <title>Imagens Equipamento</title>
+
+</head>
+<body>
+    {% set endpoint = url_for( request.endpoint, **request.view_args) %}
+    {% set IDEqto = endpoint.split('/')[-1] %}
+    {% set endpoint = endpoint.split('/')[2] %}
+    <nav class="navbar navbar-light" style="background-color: rgb(58,56,56);">
+        <a class="navbar-brand" href="/Ctr_Eqto/{{endpoint}}">
+            <img src="/static/img/logo_enind_eqtos.svg" width="60" height="60" alt="">
+            <span style="font-size: 30px; font-weight: 600; word-break: break-all; font-weight: 80; font-family: 'Century Gothic';color:lightgray">
+                Imagens do Equipamento
+            </span>
+        </a>
+        <p style="font-size: 10px; font-weight: 600; word-break: break-all; font-weight: 80; font-family: 'Century Gothic'; color:lightgray; left:revert"> email: {{ email }}</p>
+    </nav>
+
+    <div class="content">
+        <div class="slides">
+
+            <!-- Icones -->
+            <input type="radio" name="slide" id="slide1" checked>
+
+            {% for i in range(QtdImg) %}
+            <input type="radio" name="slide" id="slide{{i + 2}}">
+            {% endfor %}
+
+            <!-- Imagens -->
+            <div class="slide s1">
+                <div class="container" style="background-color:transparent">
+                    <img src="/static/Imagens_Eqtos/add_img.svg" alt="">
+                    {% if Validacao == True %}
+                    <form action="{{ url_for('Carr_Img.Adiciona_Imagem', idlog = endpoint, ideqpto = IDEqto) }}" enctype="multipart/form-data" method="post" style="margin-top:-10%">
+                        <div class="d-flex bd-highligh">
+                            <div class="p-2 flex-grow-1 bd-highligh">
+                                <input  name="impImgEqto" class="form-control" type="file" id="impImgEqto" style="background-color: transparent; color: white" accept="image/png, image/gif, image/jpeg" multiple />
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <button type="submit" class="btn btn-light">Adicionar</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% else %}
+                    <p style="color: white; font-size: 30px; margin-left: 52%; transform: translate(-52%, 0) ">Imagens do equipamento</p>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            {% for i in range(QtdImg) %}
+            <div class="slide s{{i + 2}}">
+                <form action="{{ url_for('Carr_Img.Deletar_Imagem', idlog = endpoint, ideqpto = IDEqto, NomeImg = lista_imagens[i]) }}" method="post">
+                    <div class="container-lg" style="background-color:transparent">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </div>
+                </form>
+                <img class="img-fluid" src="/static/Imagens_Eqtos/{{lista_imagens[i]}}" alt="{{lista_imagens[i]}}">
+            </div>
+            {% endfor %}
+
+            <!-- Navegações -->
+            <div class="navigation">
+                <label class="bar" for="slide1"></label>
+                {% for i in range(QtdImg) %}
+                <label class="bar" for="slide{{i + 2}}"></label>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+
+
+</body>
+</html>

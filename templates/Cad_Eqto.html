@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+
+<head>
+    <!-- Meta tags ObrigatÃ³rias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <title>Registro Equipamento</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/style_linha_tempo.css">
+    <link rel="stylesheet" href="/static/css/style_cadeqto.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+
+ 
+</head>
+
+<body lang="pt-br">
+    {% set endpoint = url_for( request.endpoint, **request.view_args) %}
+    {% set endpoint = endpoint.split('/')[2] %}
+    <!-- Just an image -->
+    <nav class="navbar navbar-light" style="background-color: rgb(58,56,56);">
+        <a class="navbar-brand" href="/Ctr_Eqto/{{endpoint}}">
+            <img src="/static/img/logo_enind_eqtos.svg" width="60" height="60" alt="">
+            <span style="font-size: 30px; font-weight: 600; word-break: break-all; font-weight: 80; font-family: 'Century Gothic';color:lightgray">
+                Cadastro de Equipamento
+            </span>
+        </a>
+        <p style="font-size: 10px; font-weight: 600; word-break: break-all; font-weight: 80; font-family: 'Century Gothic'; color:lightgray; left:revert"> email: {{ email }}</p>
+    </nav>
+
+
+    {% for eqpto in equipamentos %}
+    {% if eqpto.id == ''%}
+    {% set IDEqto = 'new' %}
+    {% else %}
+    {% set IDEqto = eqpto.id %}
+    {% endif %}
+
+    {% if mensagem or mensagemErro %}
+    {% if mensagem == 'Registro realizado com sucesso!' %}
+    <div class="container p-3 my-3 border">
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Muito bem!</h4>
+            <p>Registro realizado com sucesso</p>
+            <hr>
+            <p class="mb-0">Agora é possível adicionar um novo arquivo referente ao certificado e também as imagens do equipamento.</p>
+        </div>
+    </div>
+    {% elif mensagem == 'Registro alterado com sucesso!' %}
+    <div class="container p-3 my-3 border">
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Muito bem!</h4>
+            <p>Registro alterado com sucesso</p>
+            <hr>
+            <p class="mb-0">Todas as alterações foram realizadas com exito.</p>
+        </div>
+    </div>
+    {% elif mensagemErro == '' %}
+    <div class="container p-3 my-3 border">
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Cuidado!</h4>
+            {% for line in mensagem.split('\n') %}
+            {{line}}
+            <br/>
+            {% endfor %}
+            <hr>
+            <p class="mb-0">Corrija os campos indicados para prosseguir com o registro.</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="container p-3 my-3 border">
+        <div class="alert alert-danger" role="alert">
+
+            <h4 class="alert-heading">Atenção,</h4>
+            <p>Houve um erro fora do escopo de programação <br /> <br /> {{mensagemErro}} </p>
+            <hr>
+            <p class="mb-0">Contate ao programador Wagner Barreiro para realizar as devidas alterações.</p>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <div class="container p-3 my-3 border" style="background-color:rgb(250, 250, 250); border-radius:20px">
+        <form class="was-validated" action="{{ url_for('Ctr_Eqto.Registrar_Eqpto', idlog = endpoint, ideqpto = IDEqto) }}" method="post" enctype="multipart/form-data" novalidate>
+            <div class="container">
+                <h3 style="font-family:'Century Gothic'">Dados do Equipamento</h3>
+
+                <p style="height:5pt"></p>
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="inputAddress">ID</label>
+                        <input type="text" class="form-control" id="txtID" name="txtID" value="{{ eqpto.id }}" readonly>
+                    </div>
+                    <div class="col-md-10">
+                        <label for="txtNome">Nome do Equipamento</label>
+                        <input type="text" class="form-control" id="txtNome" name="txtNome" value="{{ eqpto.Desc }}" required>
+                        <div class="invalid-feedback">
+                            Por favor, digite o nome do equipamento.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="txtNumOS">OS</label>
+                        <input type="number" class="form-control" id="txtNumOS" name="txtNumOS" value="{{ eqpto.OS }}" required>
+                        <div class="invalid-feedback">
+                            Por favor, digite o numero da OS.
+                        </div>
+                        
+                    </div>
+                    <div class="col">
+                        <label for="txtTag">Tag</label>
+                        <input type="text" class="form-control" id="txtTag" name="txtTag" value="{{ eqpto.Tag }}" required>
+                        <div class="invalid-feedback">
+                            Por favor, digite a TAG do equipamento.
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="txtNumSerie">Cod. Série</label>
+                        {% if eqpto.id == '' %}
+                        <input type="text" class="form-control" id="txtNumSerie" name="txtNumSerie" value="{{ eqpto.NumSerie }}" required>
+                        <div class="invalid-feedback">
+                            Por favor, digite a série do equipamento.
+                        </div>
+                        {% else %}
+                        <input type="text" class="form-control" id="txtNumSerie" name="txtNumSerie" value="{{ eqpto.NumSerie }}" readonly>
+                        {% endif %}
+                    </div>
+
+                    <div class="col">
+                        <label for="cboxStatus">Status</label>
+                        <select id="cboxStatus" name="cboxStatus" class="form-control" required>
+                            {% if html_Status == 'Ativo' %}
+                            <option selected>Ativo</option>
+                            <option>Inativo</option>
+                            {% elif html_Status == 'Inativo' %}
+                            <option>Ativo</option>
+                            <option selected>Inativo</option>
+                            {% else: %}
+                            <option selected>Ativo</option>
+                            <option>Inativo</option>
+                            {% endif %}
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor, escolha um status.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="txtFabricante">Nome Fabricante</label>
+                        <input type="text" class="form-control" id="txtFabricante" name="txtFabricante" value="{{ eqpto.Fabricante }}" required>
+                        <div class="invalid-feedback">
+                            Por favor, digite a fabricante do equipamento
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="inputAddress">Nome Calibradora</label>
+                        <input type="text" class="form-control" id="txtNomeCert" name="txtNomeCert" value="{{ eqpto.Certificadora }}" required>
+                        <div class="invalid-feedback">
+                            Por favor, digite quem é a calibradora do equipamento.
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputAddress">Quantidade Meses</label>
+                        <input step="0.01" type="number" class="form-control" id="txtMeses" name="txtMeses" value="{{ eqpto.QtdMeses }}" required>
+                        <div class="invalid-feedback">
+                            Por favor, digite o numero de meses que vencerá a certificação.
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputAddress">Data Calibração</label>
+                        <input type="date" class="form-control" id="txtDataCalibracao" name="txtDataCalibracao" value="{{ eqpto.DataCalibracao }}" required>
+                        <div class="invalid-feedback">
+                            Por favor, digite quem a última data que o equipamento foi calibrado.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="inputAddress">Data Vencimento</label>
+                        <input type="date" class="form-control" id="txtDataVcto" name="txtDataCalibracao" value="{{ data_vcto }}" readonly>
+                    </div>
+                    <div class="col">
+                        <label for="formFileSm" class="form-label">Arquivo Certificado</label>
+                        <input class="form-control" type="file" name="impArqCert" accept="application/pdf">
+                        <p>
+                            <input type="text" class="form-control" name="txtArqCert" id="txtArqCert" value="{{ArqCert}}" style="visibility:hidden; height:0" readonly>
+                                {% if ArqCert != '' %}
+                                <i class="far fa-file-pdf" style="color:darkblue"><a href="/static/certificados/{{ArqCert}}">  Clique aqui para ver o certificado</a></i>
+                                {% else %}
+                                <span>Nenhum arquivo anexado anteriormente</span>
+                                {% endif %}
+                            </input>
+                        </p>
+                    </div>
+                </div>
+
+
+                <p style="height:20pt"></p>
+                {% if valid  %}
+                <div class="row d-flex justify-content-center">
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" data-mdb-button-init class="btn btn-primary btn-lg" data-mdb-ripple-init style="align-content:center">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+
+    <div class="container p-3 my-3 border" style="border-radius: 20px; background-color:rgb(250, 250, 250)">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body" style="background-color: rgb(250, 250, 250)">
+                        <h3 class="card-title" style="font-family:'Century Gothic'">Linha do Tempo</h3>
+                        <div id="content">
+                            {% for alteracao in alteracoes %}
+                            <ul class="timeline">
+                                <li class="event" data-date="{{ alteracao.Data }}">
+                                    <h2>{{ alteracao.Titulo }}</h2>
+                                    <p> alteração realizada por {{ alteracao.Email }} às {{ alteracao.Hora }}</p>
+                                    {% for line in alteracao.Descricao.split('\n') %}
+
+                                    {% if 'ArqCertificacao' in line %}
+                                    {% set nomearquivo = line.replace('o campo "ArqCertificacao" passou a ser ','').replace('"',"").replace(' ','') %}
+                                    o campo "ArqCertificacao" passou a ser <i class="far fa-file-pdf" style="color:darkblue"><a href="/static/certificados/{{nomearquivo}}"> {{nomearquivo}}</a></i>
+                                    {% else %}
+                                    {{ line }}
+                                    {% endif %}
+                                    <br />
+                                    {% endfor %}
+                                </li>
+                            </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+
+
+</html>
