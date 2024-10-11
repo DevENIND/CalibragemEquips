@@ -7,12 +7,11 @@
 
 from calendar import month
 from email.utils import formataddr
-from logging.config import ConvertingDict
 from time import strptime
 from tkinter.tix import Form
 from xmlrpc.client import DateTime
 import mysql.connector
-from wtforms import form
+
 
 def mysql_connection(host, user, passwd, database=None):
     try:
