@@ -2,7 +2,7 @@ import email
 import re
 from typing import Type
 from flask import Blueprint, redirect, render_template, request, Flask
-import funcoes.emails
+import database.emails
 from werkzeug.utils import secure_filename
 from math import ceil
 from datetime import date, timedelta

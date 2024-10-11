@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from math import ceil
 from datetime import date, timedelta
 import os
-import funcoes.emails
+import database.emails
 from werkzeug.utils import secure_filename
 
 
