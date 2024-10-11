@@ -13,14 +13,13 @@ UPLOAD_FOLDER_CERT = '/static/certificados'
 
 app.config['UPLOAD_FOLDER_CERT'] = UPLOAD_FOLDER_CERT
 
-app.register_blueprint(log_eqto_route, url_prefix="/log_eqto")
+app.register_blueprint(log_eqto_route, url_prefix="/")
 app.register_blueprint(Cad_Eqto_route, url_prefix="/Cad_Eqto")
 app.register_blueprint(Ctr_Eqto_route, url_prefix="/Ctr_Eqto")
 app.register_blueprint(Carr_Img_route, url_prefix="/Carr_Img")
 
 
 if __name__ == "__main__":
-    port = int(os.getenv('ENV'),'5000')
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True)
  
     

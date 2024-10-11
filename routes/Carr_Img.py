@@ -19,7 +19,7 @@ app.config['UPLOAD_FOLDER'] = './static/Imagens_Eqtos'
 
 def Carrega_Pagina(idlog, ideqpto):
     
-    #Carregando a página de imagens
+    #Carregando a pï¿½gina de imagens
     
     validacao, msgerro, EndEmail = database.emails.valida_token_email(idlog)
     strToken = idlog
@@ -33,7 +33,7 @@ def Carrega_Pagina(idlog, ideqpto):
                 )
         
     else:
-        return redirect(f'/log_eqto')
+        return redirect(f'/')
 
 
     return render_template("Carr_Imagens.html")
@@ -82,7 +82,7 @@ def Adiciona_Imagem(idlog, ideqpto):
    
           
     else:
-        return redirect(f'/log_eqto')
+        return redirect(f'/')
 
 
 @Carr_Img_route.route('<idlog>/<ideqpto>/delete/<NomeImg>', methods=['Post'])
@@ -101,5 +101,5 @@ def Deletar_Imagem(idlog, ideqpto, NomeImg):
 
         return redirect(f'/Carr_Img/{idlog}/{ideqpto}')      
     else:
-        return redirect(f'/log_eqto')
+        return redirect(f'/')
    

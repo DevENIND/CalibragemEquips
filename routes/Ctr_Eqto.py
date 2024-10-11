@@ -29,7 +29,7 @@ def lista_eqtos(idlog):
         qtdLinhas = int(ceil(qtdTotal / 3))
         return render_template('Ctr_Eqto.html', email=EndEmail, qtd_linhas=qtdLinhas, qtd_total=qtdTotal, equipamentos=lista_equipamentos)
     else:
-        return redirect(f'/log_eqto')
+        return redirect(f'/')
 
 @Ctr_Eqto_route.route('/<idlog>/edit/<ideqpto>')
 def Editar(idlog, ideqpto):
@@ -37,7 +37,7 @@ def Editar(idlog, ideqpto):
     print(EndEmail)
     strToken = idlog
     if validacao == True:
-        # A segunda validação serve para saber se o e-mail em questão está apto a realizar alterações
+        # A segunda validaï¿½ï¿½o serve para saber se o e-mail em questï¿½o estï¿½ apto a realizar alteraï¿½ï¿½es
         listaEqtpo, validacao, msgerro = database.emails.puxa_registro(ideqpto, EndEmail)
         msg = ''
         if listaEqtpo != []: 
@@ -58,7 +58,8 @@ def Editar(idlog, ideqpto):
         return render_template('Cad_Eqto.html', idlog = idlog, ideqpto = ideqpto ,  equipamentos = listaEqtpo, valid = validacao, email = EndEmail)
         
     else:
-        return redirect(f'/log_eqto')
+        return redirect(f'/'
+                        f'')
 
 @Ctr_Eqto_route.route('/<idlog>/delete/<ideqpto>')
 def Deletar(idlog, ideqpto):
@@ -66,7 +67,7 @@ def Deletar(idlog, ideqpto):
     print(EndEmail)
     strToken = idlog
     if validacao == True:
-        # A segunda validação serve para saber se o e-mail em questão está apto a realizar alterações
+        # A segunda validaï¿½ï¿½o serve para saber se o e-mail em questï¿½o estï¿½ apto a realizar alteraï¿½ï¿½es
         validacao, msg, msgerro = database.emails.deleta_registro_eqto(ideqpto, EndEmail)
         
         if validacao == True:
@@ -82,7 +83,7 @@ def Deletar(idlog, ideqpto):
         return redirect(f'/Ctr_Eqto/{idlog}')
         
     else:
-        return redirect(f'/log_eqto')
+        return redirect(f'/')
     
     
 def allowed_file(filename):
@@ -168,7 +169,7 @@ def Registrar_Eqpto(idlog, ideqpto):
     if validacao == True:
       
 
-        # A segunda validação serve para saber se o e-mail em questão está apto a realizar alterações
+        # A segunda validaï¿½ï¿½o serve para saber se o e-mail em questï¿½o estï¿½ apto a realizar alteraï¿½ï¿½es
         validacao, msg, msgerro, idEqui, DataVcto, ArquivoCert = database.emails.realiza_registro(ideqpto, EndEmail, registro)
         
         print(validacao)
@@ -247,4 +248,4 @@ def Registrar_Eqpto(idlog, ideqpto):
                 )
         
     else:
-        return redirect(f'/log_eqto')
+        return redirect(f'/')

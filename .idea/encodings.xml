@@ -2,6 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/routes/Cad_Eqto.py" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/routes/Ctr_Eqto.py" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/routes/log_eqto.py" charset="windows-1252" />
   </component>
 </project>
