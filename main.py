@@ -21,6 +21,6 @@ app.register_blueprint(Carr_Img_route, url_prefix="/Carr_Img")
 
 if __name__ == "__main__":
     port = int(os.getenv('PORT','5000'))
-    app.run(host='0.0.0.0', port = port, debug=True)
+    app.run(host='0.0.0.0', port = port)
  
     
