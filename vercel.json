@@ -2,22 +2,22 @@
 	"version": 2,
 	"builds": [
 		{
-			"src": "api/main.py",
+			"src": "main.py",
 			"use": "@vercel/python"
 		}
 	],
 	"routes": [
 		{
 			"src": "/(.*)",
-			"dest": "/api/routes/log_eqto.py"
+			"dest": "/routes/log_eqto.py"
 		},
 		{
 			"src": "/Ctr_Eqto/(.*)",
-			"dest": "/api/routes/Ctr_Eqto.py"
+			"dest": "/routes/Ctr_Eqto.py"
 		},
 		{
 			"src": "/Carr_Img/(.*)",
-			"dest": "/api/routes/Carr_Img.py"
+			"dest": "/routes/Carr_Img.py"
 		}
 	]
 }
