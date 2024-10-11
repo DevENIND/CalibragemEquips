@@ -1,7 +1,7 @@
 from ast import Global
 from flask import Blueprint, render_template, request, redirect
 from werkzeug.utils import secure_filename
-import funcoes.emails
+import database.emails
 
 log_eqto_route = Blueprint('log_eqto', __name__)
 
