@@ -4,6 +4,7 @@ from routes.log_eqto import log_eqto_route
 from routes.Cad_Eqto import Cad_Eqto_route
 from routes.Ctr_Eqto import Ctr_Eqto_route
 from routes.Carr_Img import Carr_Img_route
+import os
 
  
 app = Flask(__name__)
@@ -19,6 +20,7 @@ app.register_blueprint(Carr_Img_route, url_prefix="/Carr_Img")
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.getenv('PORT','5000'))
+    app.run(host='0.0.0.0', port = port, debug=True)
  
-    requiments.txt
+    
