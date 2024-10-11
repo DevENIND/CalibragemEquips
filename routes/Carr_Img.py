@@ -21,12 +21,12 @@ def Carrega_Pagina(idlog, ideqpto):
     
     #Carregando a página de imagens
     
-    validacao, msgerro, EndEmail = funcoes.emails.valida_token_email(idlog)
+    validacao, msgerro, EndEmail = database.emails.valida_token_email(idlog)
     strToken = idlog
     
     if validacao == True:
         pasta = f'{app.config["UPLOAD_FOLDER"]}'
-        validacao, listaImgs, QtdImg= funcoes.emails.puxa_Imagens(ideqpto, EndEmail, pasta)
+        validacao, listaImgs, QtdImg= database.emails.puxa_Imagens(ideqpto, EndEmail, pasta)
  
         return render_template(
                 'Carr_Imagens.html', idlog = idlog, ideqpto = ideqpto,  lista_imagens = listaImgs, Validacao = validacao, QtdImg = QtdImg
@@ -40,12 +40,12 @@ def Carrega_Pagina(idlog, ideqpto):
 
 @Carr_Img_route.route('<idlog>/<ideqpto>', methods=['Post'])
 def Adiciona_Imagem(idlog, ideqpto):
-    validacao, msgerro, EndEmail = funcoes.emails.valida_token_email(idlog)
+    validacao, msgerro, EndEmail = database.emails.valida_token_email(idlog)
     strToken = idlog
     
     if validacao == True:
         pasta = f'{app.config["UPLOAD_FOLDER"]}'
-        validacao, listaImgs, QtdImg = funcoes.emails.puxa_Imagens(ideqpto, EndEmail, pasta)
+        validacao, listaImgs, QtdImg = database.emails.puxa_Imagens(ideqpto, EndEmail, pasta)
         #Adiciona imagens
         pasta = ''
         
@@ -87,17 +87,17 @@ def Adiciona_Imagem(idlog, ideqpto):
 
 @Carr_Img_route.route('<idlog>/<ideqpto>/delete/<NomeImg>', methods=['Post'])
 def Deletar_Imagem(idlog, ideqpto, NomeImg):
-    validacao, msgerro, EndEmail = funcoes.emails.valida_token_email(idlog)
+    validacao, msgerro, EndEmail = database.emails.valida_token_email(idlog)
     strToken = idlog
     
     if validacao == True:
         pasta = f'{app.config["UPLOAD_FOLDER"]}'
-        validacao, listaImgs, QtdImg = funcoes.emails.puxa_Imagens(ideqpto, EndEmail, pasta)
+        validacao, listaImgs, QtdImg = database.emails.puxa_Imagens(ideqpto, EndEmail, pasta)
 
         if validacao == True:
             #Exclui imagens
             pasta = f'{app.config["UPLOAD_FOLDER"]}'
-            funcoes.emails.deleta_arquivos_img(pasta,NomeImg)
+            database.emails.deleta_arquivos_img(pasta,NomeImg)
 
         return redirect(f'/Carr_Img/{idlog}/{ideqpto}')      
     else:

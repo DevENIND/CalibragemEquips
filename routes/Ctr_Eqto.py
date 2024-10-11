@@ -17,12 +17,12 @@ app.config['UPLOAD_FOLDER'] = './static/certificados'
 def lista_eqtos(idlog):
     print("alimentando listagem")
     #Lista os equipamentos
-    validacao, msgerro, EndEmail = funcoes.emails.valida_token_email(idlog)
+    validacao, msgerro, EndEmail = database.emails.valida_token_email(idlog)
     
     global strToken
     strToken = idlog
     
-    lista_equipamentos = funcoes.emails.Lista_Eqtos()
+    lista_equipamentos = database.emails.Lista_Eqtos()
 
     if validacao == True:
         qtdTotal = len(lista_equipamentos)
@@ -33,18 +33,18 @@ def lista_eqtos(idlog):
 
 @Ctr_Eqto_route.route('/<idlog>/edit/<ideqpto>')
 def Editar(idlog, ideqpto):
-    validacao, msgerro, EndEmail = funcoes.emails.valida_token_email(idlog)
+    validacao, msgerro, EndEmail = database.emails.valida_token_email(idlog)
     print(EndEmail)
     strToken = idlog
     if validacao == True:
         # A segunda validação serve para saber se o e-mail em questão está apto a realizar alterações
-        listaEqtpo, validacao, msgerro = funcoes.emails.puxa_registro(ideqpto, EndEmail)
+        listaEqtpo, validacao, msgerro = database.emails.puxa_registro(ideqpto, EndEmail)
         msg = ''
         if listaEqtpo != []: 
             ArquivoCert = listaEqtpo[0]['ArqCertificacao']
             DataVcto = listaEqtpo[0]['DataValidade']
         
-        lista_Alt = funcoes.emails.busca_alteracoes(listaEqtpo[0]['id'])
+        lista_Alt = database.emails.busca_alteracoes(listaEqtpo[0]['id'])
 
         caminho_url = f'/Ctr_Eqto/{idlog}/edit/{ideqpto}'
         
@@ -62,19 +62,19 @@ def Editar(idlog, ideqpto):
 
 @Ctr_Eqto_route.route('/<idlog>/delete/<ideqpto>')
 def Deletar(idlog, ideqpto):
-    validacao, msgerro, EndEmail = funcoes.emails.valida_token_email(idlog)
+    validacao, msgerro, EndEmail = database.emails.valida_token_email(idlog)
     print(EndEmail)
     strToken = idlog
     if validacao == True:
         # A segunda validação serve para saber se o e-mail em questão está apto a realizar alterações
-        validacao, msg, msgerro = funcoes.emails.deleta_registro_eqto(ideqpto, EndEmail)
+        validacao, msg, msgerro = database.emails.deleta_registro_eqto(ideqpto, EndEmail)
         
         if validacao == True:
             pasta = f'{app.config["UPLOAD_FOLDER"]}'
         
-            funcoes.emails.deleta_arquivos_eqto(ideqpto, pasta)
+            database.emails.deleta_arquivos_eqto(ideqpto, pasta)
         
-            lista_equipamentos = funcoes.emails.Lista_Eqtos()
+            lista_equipamentos = database.emails.Lista_Eqtos()
 
             qtdTotal = len(lista_equipamentos)
             qtdLinhas = int(ceil(qtdTotal / 3))
@@ -161,7 +161,7 @@ def Registrar_Eqpto(idlog, ideqpto):
         
     print('passou pela fase do registro')
 
-    validacao, msgerro, EndEmail = funcoes.emails.valida_token_email(idlog)
+    validacao, msgerro, EndEmail = database.emails.valida_token_email(idlog)
     print(EndEmail)
     
     strToken = idlog
@@ -169,7 +169,7 @@ def Registrar_Eqpto(idlog, ideqpto):
       
 
         # A segunda validação serve para saber se o e-mail em questão está apto a realizar alterações
-        validacao, msg, msgerro, idEqui, DataVcto, ArquivoCert = funcoes.emails.realiza_registro(ideqpto, EndEmail, registro)
+        validacao, msg, msgerro, idEqui, DataVcto, ArquivoCert = database.emails.realiza_registro(ideqpto, EndEmail, registro)
         
         print(validacao)
         print(msg)
@@ -199,7 +199,7 @@ def Registrar_Eqpto(idlog, ideqpto):
             print(f'salvando o arquivo como o nome: {ArquivoCert}')
             
             if 'impArqCert' not in request.files:
-                validacao, msg, msgerro = funcoes.emails.deleta_registro_eqto(registro[0]['id'], EndEmail)
+                validacao, msg, msgerro = database.emails.deleta_registro_eqto(registro[0]['id'], EndEmail)
                 msg = "Nao possui impArqCert no formulario"
                 registro[0]['id'] = ''
             else:
@@ -210,7 +210,7 @@ def Registrar_Eqpto(idlog, ideqpto):
                     # if user does not select file, browser also
                     # submit an empty part without filename
                     if file.filename == '':
-                        validacao, msg, msgerro = funcoes.emails.deleta_registro_eqto(registro[0]['id'], EndEmail)
+                        validacao, msg, msgerro = database.emails.deleta_registro_eqto(registro[0]['id'], EndEmail)
                         msg = "Arquivo anexado nao tem nome"
                         registro[0]['id'] = ''
                     
@@ -221,7 +221,7 @@ def Registrar_Eqpto(idlog, ideqpto):
             print(f'salvando o arquivo alterado como o nome: {ArquivoCert}')
             
             if 'impArqCert' not in request.files:
-                validacao, ArquivoCert, msg = funcoes.emails.restaura_arquivo_cert(registro[0]['id'], ArquivoCert, Caminho_Salvar)
+                validacao, ArquivoCert, msg = database.emails.restaura_arquivo_cert(registro[0]['id'], ArquivoCert, Caminho_Salvar)
             else:
                 file = request.files['impArqCert']
                 pasta = f'{app.config["UPLOAD_FOLDER"]}/{ArquivoCert}'
@@ -230,7 +230,7 @@ def Registrar_Eqpto(idlog, ideqpto):
                     # if user does not select file, browser also
                     # submit an empty part without filename
                     if file.filename == '':
-                        validacao, ArquivoCert, msg = funcoes.emails.restaura_arquivo_cert(registro[0]['id'], ArquivoCert, Caminho_Salvar)
+                        validacao, ArquivoCert, msg = database.emails.restaura_arquivo_cert(registro[0]['id'], ArquivoCert, Caminho_Salvar)
                     
                     if file and allowed_file(file.filename):
                         file.save(pasta)
@@ -238,7 +238,7 @@ def Registrar_Eqpto(idlog, ideqpto):
         
         caminho_url = f'/Ctr_Eqto/{idlog}/edit/{ideqpto}'
         
-        lista_Alt = funcoes.emails.busca_alteracoes(registro[0]['id'])
+        lista_Alt = database.emails.busca_alteracoes(registro[0]['id'])
 
         return render_template(
                 'Cad_Eqto.html', idlog = idlog, ideqpto = ideqpto ,  equipamentos = registro, valid = True, 

@@ -59,7 +59,7 @@ def enviar_email():
     if nome_btn == 'Enviar':
             nome_btn = "Validar"
             email_completo = prefixoemail + email
-            envio, Valor_Erro = funcoes.emails.registra_codigo_email(email_completo)
+            envio, Valor_Erro = database.emails.registra_codigo_email(email_completo)
             if envio == True:
                     mensagem = "Email enviado com sucesso!"
                     return render_template('log_eqto.html', prefemail=prefixoemail, nomebtn="Validar", cod_usado = codigo, msg=mensagem, tipoalerta= "description-success", dominioemail=email)
@@ -84,7 +84,7 @@ def enviar_email():
                 return render_template('log_eqto.html', prefemail=prefixoemail, cod_usado = codigo,  msg=mensagem, tipoalerta= "description-danger", dominioemail=email)   
             
            email_completo = prefixoemail + email
-           Validacao, Valor_Erro, strtoken = funcoes.emails.valida_codigo(email_completo,codigo)
+           Validacao, Valor_Erro, strtoken = database.emails.valida_codigo(email_completo,codigo)
            if Validacao == True:
                return redirect(f'/Ctr_Eqto/{strtoken}')
            else:
@@ -132,7 +132,7 @@ def reenvio():
    
     nome_btn = "Validar"
     email_completo = prefixoemail + email
-    envio, Valor_Erro, strtoken = funcoes.emails.registra_codigo_email(email_completo)
+    envio, Valor_Erro, strtoken = database.emails.registra_codigo_email(email_completo)
     if envio == True:
           mensagem = "Email enviado com sucesso!"
           return render_template('log_eqto.html', prefemail=prefixoemail, nomebtn="Validar", cod_usado = codigo, msg=mensagem, tipoalerta= "description-success", dominioemail=email)
